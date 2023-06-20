@@ -1,0 +1,581 @@
+
+#include<iostream>
+#include <fstream>
+#include <utility>
+#include <string>
+#include <vector>
+using namespace std;
+
+ //-----------------------------------------Admin Tabs
+//Book 
+void Book_Management ();
+void AddBook();
+vector<pair<int, string>> RetrieveBooks();
+bool DeleteBook(const string & bookname);
+
+//User
+vector<pair<int, string>> GetAllUsernames();
+bool DeleteUser(string username);
+void SignUp();
+void Borrowing_and_Returning_Management();
+
+// Event Management Functions
+void Communication_Management ();
+void AddEvent();
+bool DeleteEvent(const string& eventname);
+vector<pair<int, string>> RetrieveEvents();
+
+// New Book Management Functions
+void AddNewBook();
+bool DeleteNewBook(const string& bookname);
+vector<pair<int, string>> RetrieveNewBooks();
+
+
+void User_Management() {
+    int choice;
+
+    while (true) {
+        cout << "\n\t\t\tUser Management\n";
+        cout << "\n--------------------------------" << endl;
+        cout << "| 1. Add User                  |" << endl;
+        cout << "| 2. List all Users            |" << endl;
+        cout << "| 3. Delete User               |" << endl;
+        cout << "| 0. Exit                      |" << endl;
+        cout << "--------------------------------" << endl;
+
+        cout << "\nEnter the Code: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            SignUp();
+        } 
+        else if (choice == 2) {
+            vector<pair<int, string>> usernames = GetAllUsernames();
+            if (usernames.empty()) {
+                cout << "\nNo users found." << endl;
+            } 
+            else {
+                cout << "\nUsernames:\n" << endl;
+                int count = 1;
+                for (pair<int, string> user : usernames) {
+                    cout << count << ". " << user.second << endl;
+                    count++;
+                }
+            }
+        }   
+        else if (choice == 3) {
+            string username;
+            cout << "\nEnter username to delete: ";
+            cin >> username;
+            if (DeleteUser(username)) {
+                cout << "\nUser " << username << " deleted successfully." << endl;
+            } 
+            else {
+                cout << "\nUser " << username << " not found." << endl;
+            }
+        }
+        else if (choice == 0) {
+            break; // exit the loop
+        } 
+        else {
+            cout << "\nPlease Enter Correct Number." << endl;
+        }
+    }
+}
+
+void Book_Management() {
+    int choice;
+
+    while (true) {
+        cout << "\n\t\t\tBook Management\n";
+        cout << "\n\t\t\t---------------\n";
+        cout << "\n--------------------------------" << endl;
+        cout << "| 1. Add Book                  |" << endl;
+        cout << "| 2. List all Books            |" << endl;
+        cout << "| 3. Delete Book               |" << endl;
+        cout << "| 0. Exit                      |" << endl;
+        cout << "--------------------------------" << endl;
+
+        cout << "\nEnter the Code: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            AddBook();
+        } else if (choice == 2) {
+            vector<pair<int, string>> books = RetrieveBooks(); // Retrieve all books
+            for (const auto& book : books) {
+                cout << "Book " << book.first << ": " << book.second << endl;
+            }
+        } else if (choice == 3) {
+            string bookToDelete;
+            cout << "Enter the name of the book to delete: ";
+            cin >> bookToDelete;
+
+            if (DeleteBook(bookToDelete)) {
+                cout << "Book deleted successfully." << endl;
+            } else {
+                cout << "Book not found." << endl;
+            }
+        } else if (choice == 0) {
+            break; // exit the loop
+        } else {
+            cout << "\nPlease Enter Correct Number." << endl;
+        }
+    }
+}
+
+void Communication_Management() {
+    int choice;
+
+    while (true) {
+        cout << "\n\t\t\tCommunication Management\n";
+        cout << "\n\t\t\t------------------------\n";
+        cout << "\n--------------------------------" << endl;
+        cout << "| 1. Add New Book               |" << endl;
+        cout << "| 2. Add Event                  |" << endl;
+        cout << "| 3. List all New Books         |" << endl;
+        cout << "| 4. List all Event             |" << endl;
+        cout << "| 5. Delete New Book            |" << endl;
+        cout << "| 6. Delete Event               |" << endl;
+        cout << "| 0. Exit                       |" << endl;
+        cout << "--------------------------------" << endl;
+
+        cout << "\nEnter the Code: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            AddNewBook();
+        } else if (choice == 2) {
+            AddEvent();
+        } else if (choice == 3) {
+            vector<pair<int, string>> newBooks = RetrieveNewBooks(); // Retrieve all new books
+            for (const auto& book : newBooks) {
+                cout << "New Book " << book.first << ": " << book.second << endl;
+            }
+        } else if (choice == 4) {
+            vector<pair<int, string>> events = RetrieveEvents(); // Retrieve all events
+            for (const auto& event : events) {
+                cout << "Event " << event.first << ": " << event.second << endl;
+            }
+        } else if (choice == 5) {
+            string bookToDelete;
+            cout << "Enter the name of the new book to delete: ";
+            cin >> bookToDelete;
+
+            if (DeleteNewBook(bookToDelete)) {
+                cout << "New book deleted successfully." << endl;
+            } else {
+                cout << "New book not found." << endl;
+            }
+        } else if (choice == 6) {
+            string eventToDelete;
+            cout << "Enter the name of the event to delete: ";
+            cin >> eventToDelete;
+
+            if (DeleteEvent(eventToDelete)) {
+                cout << "Event deleted successfully." << endl;
+            } else {
+                cout << "Event not found." << endl;
+            }
+        } else if (choice == 0) {
+            break; // exit the loop
+        } else {
+            cout << "\nPlease Enter Correct Number." << endl;
+        }
+    }
+}
+
+void Borrowing_and_Returning_Management  (){cout<<"\nBorrowing_and_Returning_Management ";}
+
+void Admin_Tabs() {
+    int a;
+    while (true) {
+        cout << "\n" << endl;
+        cout << "--------------------------------" << endl;
+        cout << "| 1. User Management           |" << endl;
+        cout << "|------------------------------|" << endl;
+        cout << "| 2. Book Management           |" << endl;
+        cout << "|------------------------------|" << endl;
+        cout << "| 3. Communication Management  |" << endl;
+        cout << "|------------------------------|" << endl;
+        cout << "| 4. Borrowing and Returning   |" << endl;
+        cout << "|    Management                |" << endl;
+        cout << "|------------------------------|" << endl;
+        cout << "| 0. Exit                       |" << endl;
+        cout << "--------------------------------" << endl;
+
+        cout << "\nEnter the Code: ";
+        cin >> a;
+
+        if (a == 1) {
+            User_Management();
+        } else if (a == 2) {
+            Book_Management();
+        } else if (a == 3) {
+            Communication_Management();
+        } else if (a == 4) {
+            Borrowing_and_Returning_Management();
+        } else if (a == 0) {
+            break; // exit the loop
+        } else {
+            cout << "\nPlease Enter Correct Number." << endl;
+        }
+    }
+}
+
+void User_Tabs() {
+    cout << "User_Tabs" << endl;
+}
+
+void SignUp() {
+    string password, username;
+    cout << "Enter Username [with no space]: ";
+    cin >> username;
+    cout << "Enter Password: ";
+    cin >> password;
+    ofstream outfile("login.txt", ios::app);
+    outfile << "Username: "+ username << endl;
+    outfile << "Password: "+ password << endl;
+    outfile.close();
+}
+
+vector<pair<int, string>> GetAllUsernames() {
+    vector<pair<int, string>> usernames;
+    ifstream infile("login.txt");
+    string line;
+    int count = 0;
+    while (getline(infile, line)) {
+        if (line.substr(0, 9) == "Username:") {
+            string username = line.substr(10);
+            usernames.push_back(make_pair(++count, username));
+        }
+    }
+    infile.close();
+    return usernames;
+}
+
+bool DeleteUser(string username) {
+    ifstream infile("login.txt");
+    ofstream outfile("temp.txt");
+    bool deleted = false;
+    string line;
+    while (getline(infile, line)) {
+        if (line.substr(0, 9) == "Username:") {
+            if (line.substr(10) == username) {
+                // Skip this line and the next line (the password line)
+                getline(infile, line);
+                deleted = true;
+                continue;
+            }
+        }
+        outfile << line << endl;
+    }
+    infile.close();
+    outfile.close();
+    remove("login.txt");
+    rename("temp.txt", "login.txt");
+    return deleted;
+}
+
+bool Login() {
+    string password, username;
+    cout << "Enter Username: ";
+    cin >> username;
+    cout << "Enter Password: ";
+    cin >> password;
+    ifstream infile("login.txt");
+
+    string line;
+    bool foundUsername = false;
+    bool foundPassword = false;
+
+    while (getline(infile, line)) {
+        if (line.find(username) != string::npos) {
+            foundUsername = true;
+        }
+        if (foundUsername && line.find(password) != string::npos) {
+            foundPassword = true;
+            break;
+        }
+    }
+
+    infile.close();
+
+    return foundUsername && foundPassword;
+}
+
+void adminLogin() {
+    int b = 1;
+    string user_nam, user_passw;
+    for (int i = 1; i <= b; i++) {
+        cout << "\nWelcome To Admin Portal\n";
+        cout << "\nEnter User Name: ";
+        cin >> user_nam;
+        cout << "Enter Password: ";
+        cin >> user_passw;
+        if (user_nam == "Admin" && user_passw == "4321") {
+            cout << "\nDear Admin: Welcome To Our Library Management System.\n";
+            cout << "\n";
+            //Jibran will start
+            Admin_Tabs();
+            break;
+        } else {
+            cout << "\n*******************************\n";
+            cout << "*        ERROR:              *\n";
+            cout << "* Invalid username or password *\n";
+            cout << "*******************************\n";
+            cout << "\nEnter the details again.";
+            b++;
+        }
+    }
+}
+
+void userLogin() {
+    int b = 1, a;
+    string adm_nam, adm_passw;
+    for (int i = 1; i <= b; i++) {
+
+        cout << "\nWelcome To User Portal\n";
+        cout << "\nFor Sign-Up, Enter 1\n";
+        cout << "For Login, Enter 2\n\n";
+        cin >> a;
+        if (a == 1) {
+            SignUp();
+            cout << "\nCongrulations!! You have been signed up.";
+            cout << "\nPlease enter your username and password to Login.\n";
+            cout << "\n";
+            if (Login()) {
+                cout << "Login successful. Welcome Sir, " << "!" << endl;
+                cout << "\n";
+                User_Tabs();
+            } else {
+                cout << "Login failed. Please try again." << b++;
+            }
+        } else if (a == 2) {
+            if (Login()) {
+                cout << "\n";
+                cout << "Login successful. Welcome Sir, " << "!" << endl;
+                User_Tabs();
+            } else {
+                cout << "Login failed. Please try again." << b++;
+                cout << "\n";
+            }
+        }
+    }
+}
+// books
+
+ void AddBook() {
+    string bookname, authorname;
+    cout << "Enter Book Name [with no space]: ";
+    cin >> bookname;
+    cout << "Enter Book Author Name [with no space]: ";
+    cin >> authorname;
+
+    ofstream outfile("books.txt", ios::app);
+    if (outfile.is_open()) {
+        outfile << "Book_Name: " << bookname << endl;
+        outfile << "Author_Name: " << authorname << endl;
+        outfile.close();
+        cout << "Book added successfully." << endl;
+    } else {
+        cout << "Failed to open the file." << endl;
+    }
+}
+
+bool DeleteBook(const string & bookname) {
+    ifstream infile("books.txt");
+    ofstream outfile("temp.txt");
+    bool deleted = false;
+    string line;
+    while (getline(infile, line)) {
+        if (line.substr(0, 11) == "Book_Name: ") {
+            if (line.substr(11) == bookname) {
+                // Skip this line and the next line (the author name line)
+                getline(infile, line);
+                deleted = true;
+                continue;
+            }
+        }
+        outfile << line << endl;
+    }
+    infile.close();
+    outfile.close();
+    remove("books.txt");
+    rename("temp.txt", "books.txt");
+    return deleted;
+}
+
+vector<pair<int, string>> RetrieveBooks() {
+    vector<pair<int, string>> booknames;
+    ifstream infile("books.txt");
+    if (infile.is_open()) {
+        string line;
+        int count = 0;
+        while (getline(infile, line)) {
+            if (line.substr(0, 11) == "Book_Name: ") {
+                string bookname = line.substr(11);
+                booknames.push_back(make_pair(++count, bookname));
+            }
+        }
+        infile.close();
+    } else {
+        cout << "Failed to open the file." << endl;
+    }
+    return booknames;
+}
+ 
+void AddEvent() {
+    string eventname, location;
+    cout << "Enter Event Name [with no space]: ";
+    cin >> eventname;
+    cout << "Enter Event Location [with no space]: ";
+    cin >> location;
+
+    ofstream outfile("events.txt", ios::app);
+    if (outfile.is_open()) {
+        outfile << "Event_Name: " << eventname << endl;
+        outfile << "Location: " << location << endl;
+        outfile.close();
+        cout << "Event added successfully." << endl;
+    } else {
+        cout << "Failed to open the file." << endl;
+    }
+}
+
+bool DeleteEvent(const string& eventname) {
+    ifstream infile("events.txt");
+    ofstream outfile("temp.txt");
+    bool deleted = false;
+    string line;
+    while (getline(infile, line)) {
+        if (line.substr(0, 12) == "Event_Name: ") {
+            if (line.substr(12) == eventname) {
+                // Skip this line and the next line (the location line)
+                getline(infile, line);
+                deleted = true;
+                continue;
+            }
+        }
+        outfile << line << endl;
+    }
+    infile.close();
+    outfile.close();
+    remove("events.txt");
+    rename("temp.txt", "events.txt");
+    return deleted;
+}
+
+vector<pair<int, string>> RetrieveEvents() {
+    vector<pair<int, string>> eventnames;
+    ifstream infile("events.txt");
+    if (infile.is_open()) {
+        string line;
+        int count = 0;
+        while (getline(infile, line)) {
+            if (line.substr(0, 12) == "Event_Name: ") {
+                string eventname = line.substr(12);
+                eventnames.push_back(make_pair(++count, eventname));
+            }
+        }
+        infile.close();
+    } else {
+        cout << "Failed to open the file." << endl;
+    }
+    return eventnames;
+}
+ 
+void AddNewBook() {
+    string bookname, authorname;
+    cout << "Enter New Book Name [with no space]: ";
+    cin >> bookname;
+    cout << "Enter New Book Author Name [with no space]: ";
+    cin >> authorname;
+
+    ofstream outfile("new_books.txt", ios::app);
+    if (outfile.is_open()) {
+        outfile << "Book_Name: " << bookname << endl;
+        outfile << "Author_Name: " << authorname << endl;
+        outfile.close();
+        cout << "New book added successfully." << endl;
+    } else {
+        cout << "Failed to open the file." << endl;
+    }
+}
+
+bool DeleteNewBook(const string& bookname) {
+    ifstream infile("new_books.txt");
+    ofstream outfile("temp.txt");
+    bool deleted = false;
+    string line;
+    while (getline(infile, line)) {
+        if (line.substr(0, 11) == "Book_Name: ") {
+            if (line.substr(11) == bookname) {
+                // Skip this line and the next line (the author name line)
+                getline(infile, line);
+                deleted = true;
+                continue;
+            }
+        }
+        outfile << line << endl;
+    }
+    infile.close();
+    outfile.close();
+    remove("new_books.txt");
+    rename("temp.txt", "new_books.txt");
+    return deleted;
+}
+
+vector<pair<int, string>> RetrieveNewBooks() {
+    vector<pair<int, string>> booknames;
+    ifstream infile("new_books.txt");
+    if (infile.is_open()) {
+        string line;
+        int count = 0;
+        while (getline(infile, line)) {
+            if (line.substr(0, 11) == "Book_Name: ") {
+                string bookname = line.substr(11);
+                booknames.push_back(make_pair(++count, bookname));
+            }
+        }
+        infile.close();
+    } else {
+        cout << "Failed to open the file." << endl;
+    }
+    return booknames;
+}
+ 
+void System(){
+ int a,c = 1;
+    cout << "\t\t\t\t\t+----------------------+" << endl; 
+    cout << "\t\t\t\t\t¦  Welcome to Login Page  ¦" << endl; 
+    cout << "\t\t\t\t\t+----------------------+" << endl;
+    for(int i = 1; i <= c; i++){
+        cout << "\nFor User, Enter 1\n";
+        cout << "For Admin, Enter 2\n\n";
+        cin >> a;
+        if(a == 1){
+            userLogin();
+        }
+        else if(a == 2){
+            adminLogin();
+        }
+        else{
+            cout << "\n*******************************\n";
+            cout << "*        ERROR:              *\n";
+            cout << "* Un-Identified Number: Please Give Correct Number from 1 or 2 *\n";
+            cout << "*******************************\n"; 
+            cout << "\nEnter the details again.\n";
+            c++;
+        }
+    }
+
+}
+
+ 
+
+int main() {
+ System();
+
+    return 0;
+}
